@@ -1,0 +1,20 @@
+
+    <nav class="nav-group">
+      <a href="/" class="to__home">
+        <img src="/images/6592098_preview.png" class="blog-logo" />
+      </a> 
+      <div class="navrow">
+      
+        <%= link_to 'User List', users_list_path, { :class=>is_active?(users_list_path) } %>
+        <div class="dropdown">
+            <button class="dropbtn">
+                <%= session[:email] %>
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+              <%= link_to 'User Profile', users_profile_path( :id=>session[:id] )%>
+              <%= link_to 'Logout', logout_path(:id=>session[:id])%>
+            </div>
+        </div>
+      </div>
+    </nav>

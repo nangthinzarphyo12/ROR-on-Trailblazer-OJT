@@ -1,0 +1,55 @@
+<%= render 'layouts/navbar' %>
+<div class="form">
+    <div class="form-content">
+        <%= form_for @user, url: {action: :create} do |f| %> 
+            <div class="main-title">
+                <h2>Add New User</h2>
+            </div>
+            <div class="content">
+                <label for="name">Name<span class="required-sign">*</span></label>   
+                <%= f.text_field :name ,{ :id=>'name', :placeholder=>'name'}%>
+                <% if @user.errors[:name].any? %>
+                    <span class="warning-message">Title <%= @user.errors[:name][0] %>
+                <% end %>
+            </div>
+            <div class="content">
+                <label for="email">Email<span class="required-sign">*</span></label>
+                <%= f.text_field :email ,{ :id=>'email', :placeholder=>'email'}%>
+                <% if @user.errors[:email].any? %>
+                    <span class="warning-message">Email <%= @user.errors[:email][0] %>
+                <% end %>
+            </div>
+            <div class="content">
+                <label for="password">Password<span class="required-sign">*</span></label>
+                <%= f.password_field :password ,{ :id=>'password', :placeholder=>'password'}%>
+                <% if @user.errors[:password].any? %>
+                    <span class="warning-message">Password <%= @user.errors[:password][0] %>
+                <% end %>
+            </div>
+            <div class="content">
+                <label for="password_confirmation">Confirm Password<span class="required-sign">*</span></label>
+                <%= f.password_field :password_confirmation ,{ :id=>'password_confirmation', :placeholder=>'confirm password'}%>
+                <% if @user.errors[:password_confirmation].any? %>
+                    <span class="warning-message">Password <%= @user.errors[:password_confirmation][0] %>
+                <% end %>
+            </div>
+            <div class="content">
+                <label for="phone">Phone</label>
+                <%= f.text_field :phone ,{ :id=>'phone', :placeholder=>'phone'}%>
+                <% if @user.errors[:description].any? %>
+                    <span class="warning-message">Phone <%= @user.errors[:phone][0] %>
+                <% end %>
+            </div>
+            <div class="content radio-group">
+                <%= f.radio_button :role, '0', :checked => true , :id=>'member', :class=>'radio-btn'%>
+                <label for="member" class="radio-content">Member</label>
+                <%= f.radio_button :role, '1' , :id=>'admin', :class=>'radio-btn'%>
+                <label for="admin" class="radio-content">Admin</label>
+            </div>
+            <div class="button-group">
+                <%= link_to 'Back', { controller: 'users', action: 'index'},{:class=>'sub-btn', } %>   
+                <%= f.submit 'Add' ,{ :class=>'sub-btn'}%>
+            </div>
+        <% end %>
+    </div>
+</div>
