@@ -286,6 +286,11 @@ button:hover,
 
 .awesome-icon {
     margin: 5px;
+    color:#fff;
+}
+
+.user-awesome-icon {
+    margin: 5px;
 }
 
 .blog-logo {
@@ -353,6 +358,10 @@ hr {
 }
 
 .user-table {
+    width: 100%;
+}
+
+table {
     width: 100%;
 }
 
@@ -450,6 +459,7 @@ h4 {
 
 .post-btn-group {
     margin-top: 20px;
+    margin-bottom: 10px;
 }
 
 .description-area {

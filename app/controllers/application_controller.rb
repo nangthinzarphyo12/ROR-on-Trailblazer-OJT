@@ -2,7 +2,8 @@ class ApplicationController < ActionController::Base
 
     def current_user
         if session[:id]
-            @current_user = UserService.getuserByID(session[:id])
+            run User::Operation::Edit
+            @current_user = User.find_by(id: session[:id])
         else
             redirect_to login_path, notice: "You must be logged in to access this section."
         end

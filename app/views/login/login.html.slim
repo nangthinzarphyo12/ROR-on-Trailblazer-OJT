@@ -1,0 +1,23 @@
+.form 
+    .form-content
+        .warning-message
+            = flash.notice
+        .main-title
+            h2 Login 
+        = form_with model: @form, url: login_path do |f|
+            .content
+                label Email
+                span class="required-sign" * 
+                = f.text_field 'email'
+                - if @form.errors[:email].any?
+                    .warning-message This #{ @form.errors[:email][0]}
+            .content
+                label Password
+                span class="required-sign" * 
+                = f.password_field 'password' 
+                - if @form.errors[:password].any?
+                    .warning-message This #{ @form.errors[:password][0]}
+
+            .button-group
+                = f.submit 'Login', class: 'sub-btn'
+                = link_to 'Forgot Password', password_reset_path, class:'forgot-btn'

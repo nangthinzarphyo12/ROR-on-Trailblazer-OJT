@@ -11,6 +11,17 @@ gem 'rails', '~> 6.1.3', '>= 6.1.3.2'
 # Use mysql2 as the database
 gem 'mysql2'
 
+gem "trailblazer-rails"
+
+gem "slim-rails"
+
+gem "reform", ">= 2.2.0"
+gem "reform-rails"
+gem "dry-validation"
+gem 'bcrypt-ruby'
+gem 'rails-controller-testing'
+gem 'webpacker', '~> 5.0'
+
 # Use Puma as the app server
 gem 'puma', '~> 5.0'
 # Use SCSS for stylesheets
@@ -42,6 +53,9 @@ gem 'bootsnap', '>= 1.4.4', require: false
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'rspec-rails', '~> 4.0.2'
+  gem "trailblazer-operation"
+  gem "rspec"
 end
 
 group :development do
@@ -62,3 +76,4 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem 'simplecov', require: false, group: :test

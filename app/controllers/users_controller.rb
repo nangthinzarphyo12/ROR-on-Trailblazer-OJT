@@ -2,106 +2,107 @@ class UsersController < ApplicationController
   before_action :require_login, except: [:resetPassword]
   
   def index
-    alluser = UserService.getAllUsers
-    @per_page = 5
-    @users= alluser.paginate(:page=>params[:page] , per_page:@per_page)
-    if params[:page].blank?
-      @page = 1
-    else
-      @page = params[:page].to_i
+    run User::Operation::Index do |result|
+      @users = result[:users].paginate(:page=>params[:page] , per_page: 5)
     end
   end
 
   def new
-    @user = User.new
+    @form = User.new
   end
 
   def show
-    @user = UserService.getuserByID(params[:id])
+    run User::Operation::Edit
+    @user = result["model"]
   end
 
   def edit
-    @user = UserService.getuserByID(params[:id])
+    run User::Operation::Edit
+    @user = result["model"]
   end
 
   def create
-    @user = User.new(user_params)
-    user = UserService.insertUser(@user)
-    if user
-      redirect_to users_list_path, notice: "User created successfully!"
-    else
-      render :new 
+    run User::Operation::Create do |result|
+      return redirect_to users_list_path,notice: "User is saved successfully!"
+    end
+    render :new
+  end
+
+  def search_user
+    @searchKey = params[:searchInfo]
+    run User::Operation::Search do |result|
+      @users = result[:users].paginate(:page=>params[:page],per_page: 5)
+      render :index
+      return
     end
   end
 
   def update
-    @user = UserService.getuserByID(user_params[:id])
-    isUpdated = UserService.updateUser(user_params,@user)
-    if isUpdated 
-      redirect_to users_show_path('id'=>user_params[:id]), notice: "User updated successfully!"
-    else
-      render :edit
-    end 
+    if params[:user]
+      puts (params[:user])
+    else 
+      params[:user] = params[:user_contract_update]
+    end
+    _ctx = run User::Operation::Update do |result| 
+      return redirect_to users_show_path('id'=>params[:user][:id]), notice: "User updated successfully!"
+    end
+    @user   = _ctx["contract.default"] 
+    @name  = "Editing #{_ctx[:model].name}"
+    @email  = "Editing #{_ctx[:model].email}"
+    @phone  = "Editing #{_ctx[:model].phone}"
+    render :edit
   end
 
-  def destroy
-    isDeleted = UserService.deleteUser(params[:id])
-    if isDeleted 
-      redirect_to users_list_path, notice: "User deleted successfully!"
-    else
-      render :destroy
-    end   
+  def destroy 
+    run User::Operation::Destroy do |_|
+      return redirect_to users_list_path, notice: "User deleted successfully!"
+    end  
   end
 
   def profile
-    @user = UserService.getuserByID(params[:id])
+    run User::Operation::Edit
+    @user = result["model"]
   end
 
   def editPassword
-    @user = UserService.getuserByID(params[:id])
+    run User::Operation::Edit
+    @user = result["model"]
   end
 
   def editProfile
-    @user = UserService.getuserByID(params[:id])
+    run User::Operation::Edit
+    @user = result["model"]
   end
 
   def updatePassword
-    @user = UserService.getuserByID(user_params[:id])
-
-    if user_params[:password].blank?
-      flash[:notice] = "Password is required"
-      render :editPassword
-    elsif user_params[:password_confirmation].blank?
-      flash[:notice] = "Confirm password is required"
-      render :editPassword
-    else
-      isUpdated = UserService.updateUser(user_params,@user)
-      if isUpdated 
-        redirect_to users_profile_path('id'=>user_params[:id]), notice: "Password updated successfully!"
-      else
-        render :editPassword
-      end
+    if params[:user]
+      puts (params[:user])
+    else 
+      params[:user] = params[:user_contract_update]
     end
+    _ctx = run User::Operation::UpdatePassword do |result| 
+      return redirect_to users_profile_path('id'=>params[:user][:id]), notice: "Password updated successfully!"
+    end
+    @user   = _ctx["contract.default"] 
+    @password  = "Editing #{_ctx[:model].password}"
+    @password_confirmation  = "Editing #{_ctx[:model].password_confirmation}"
+    render :editPassword
   end
 
   def updateProfile
-    @user = UserService.getuserByID(user_params[:id])
-    isUpdated = UserService.updateUser(user_params,@user)
-    if isUpdated 
-      redirect_to users_profile_path('id'=>user_params[:id]), notice: "Profile updated successfully!"
-    else
-      render :editProfile
-    end 
-  end
-
-  private
-  def user_params
-    params.require(:user).permit(:id ,:name ,:email ,:password , :password_confirmation,:phone , :role,:created_by ,:updated_by)
-  end
-
-  private
-  def user_form_params
-    params.require(:user).permit(:id ,:name ,:email ,:phone , :role,:created_by ,:updated_by)
+    if params[:user]
+      puts (params[:user])
+    else 
+      params[:user] = params[:user_contract_update]
+    end
+    _ctx = run User::Operation::Update do |result| 
+      return redirect_to users_profile_path('id'=>params[:user][:id]), notice: "Profile updated successfully!"
+    end
+    @user   = _ctx["contract.default"] 
+    @name  = "Editing #{_ctx[:model].name}"
+    @email  = "Editing #{_ctx[:model].email}"
+    @phone  = "Editing #{_ctx[:model].phone}"
+    render :editProfile 
   end
 
 end

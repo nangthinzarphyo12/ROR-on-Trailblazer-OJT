@@ -1,0 +1,13 @@
+nav 
+    .nav-group
+        a href="/" class="to__home"
+            img src="/images/6592098_preview.png" class="blog-logo" alt=""/ 
+        .navrow
+            = link_to 'User List', users_list_path,class: is_active?(users_list_path) 
+            .dropdown
+                button class='dropbtn'
+                    = session[:email]
+                    i.fa.fa-caret-down
+                .dropdown-content
+                    = link_to 'User Profile', users_profile_path( :id=>session[:id] )
+                    = link_to 'Logout', logout_path(:id=>session[:id])

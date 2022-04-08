@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   get 'users/list', to: 'users#index'
   get 'users/new'
   post 'users/new', to: 'users#create'
+  get 'users/search', to: 'users#search_user'
   get 'users/show'
   get 'users/destroy'
   get 'users/edit'

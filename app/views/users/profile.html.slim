@@ -1,0 +1,29 @@
+= render 'layouts/navbar'
+.form 
+    .form-content 
+        .successMessage
+            = flash.notice
+        h2 User Profile
+        .content
+            label Name
+            span class="required-sign" *
+            = @user.name
+        .content
+            label Email
+            span class="required-sign" * 
+            = @user.email
+        .content 
+            label Password
+            = link_to "Edit", users_editPassword_path(:id=>@user.id), class: 'sub-btn'
+        .content
+            label Phone  
+            = @user.phone
+        - if @user.role == 1
+            label Admin
+            i.fa.fa-user.user-awesome-icon
+        - else 
+            label Member
+            i.fa.fa-user.user-awesome-icon
+        .button-group
+            = link_to "Back", users_list_path, class: 'sub-btn'
+            = link_to "Edit", users_editProfile_path(:id=>@user.id), class: 'sub-btn'

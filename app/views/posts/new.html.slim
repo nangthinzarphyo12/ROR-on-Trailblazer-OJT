@@ -1,0 +1,26 @@
+.form 
+    .form-content
+        .main-title
+            h2 Add New Post
+        = form_with model: @form, url:posts_new_path, method: :post do|f|
+            .content 
+                label Post Title
+                span class="required-sign" * 
+                = f.text_field 'title'
+                - if @form.errors[:title].any?
+                    .warning-message This #{ @form.errors[:title][0]}
+            .content
+                label Description
+                span class="required-sign" * 
+                = f.text_area 'description', class: 'description-area'
+                - if @form.errors[:description].any?
+                    .warning-message This #{ @form.errors[:description][0]}
+            .content 
+                .radio-group
+                    = f.radio_button :public_flag, '1', class: 'radio-btn' , checked: true
+                    label Public
+                    = f.radio_button :public_flag, '0', class: 'radio-btn'
+                    label Private
+            .button-group
+                = link_to "Back", posts_index_path, class: 'sub-btn'
+                = f.submit 'Add', class: 'sub-btn'

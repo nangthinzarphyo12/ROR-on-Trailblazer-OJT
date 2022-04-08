@@ -1,0 +1,38 @@
+= render 'layouts/navbar'
+.form
+    .form-content
+        .successMessage
+            = flash.notice
+        h2 All User
+        = form_with  url: users_search_path,method: :get do |form|
+            .search-info
+                = form.text_field 'searchInfo',placeholder: 'name , email, phone'
+                .button-group
+                = form.submit 'Search', class: 'sub-btn'
+        .create-btn
+            = link_to "Create User", users_new_path, class: 'sub-btn'
+        table 
+            thead 
+                tr 
+                    th Name
+                    th Email
+                    th Role 
+                    th Phone
+                    th Action
+            tbody
+                - @users.each do |user|
+                    tr 
+                        td = user.name
+                        td = user.email
+                        td = user.role
+                        td = user.phone
+                        td   
+                            = link_to "Detail", users_show_path(:id=>user.id), class: 'sub-btn'
+                            = link_to "Delete", users_destroy_path(:id=>user.id), class: 'sub-btn delete-btn', :data=>{ confirm: 'Are you sure you want to delete this post?' }
+        .right-btn-group
+            = will_paginate @users, renderer: BootstrapPagination::Rails
+
+
+        
+
+                

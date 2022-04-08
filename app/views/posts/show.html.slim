@@ -1,0 +1,24 @@
+= render 'layouts/navbar'
+.form 
+    .form-content 
+        .successMessage 
+            = flash.notice
+        h2 Post Detail
+
+        .content
+            label Post Title
+            span class="required-sign" * 
+            = @post.title
+        .content
+            label Description
+            span class="required-sign" * 
+            = @post.description
+        - if @post.public_flag == 1
+            label Public
+            i.fa.fa-globe.user-awesome-icon
+        - else 
+            label Private
+            i.fa.fa-lock.user-awesome-icon
+        .button-group
+            = link_to "Back", posts_index_path, class: 'sub-btn'
+            = link_to "Edit", posts_edit_path(:id=>@post.id), class: 'sub-btn'

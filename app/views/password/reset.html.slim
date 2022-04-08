@@ -1,0 +1,15 @@
+.form 
+    .form-content 
+        h2 Reset Password
+        .successMessage
+            = flash.alert
+        .warning-message
+            = flash.notice
+        = form_with model: @user, url: password_reset_path do |f|
+            .content
+                label Email
+                span class="required-sign" * 
+                = f.text_field 'email'
+            .button-group
+                = link_to "Back", login_path, class: 'sub-btn'
+                = f.submit 'Send', class: 'sub-btn'

@@ -1,32 +1,46 @@
 class LoginController < ApplicationController
   def login
-    
+    @form = User.new
   end
 
   def attempt_login
-    if params[:email].blank?
-      flash[:notice] = "Email is required"
-      redirect_to login_path
-    elsif params[:password].blank?
-      flash[:notice] = "Password is required"
-      redirect_to login_path
-    else
-      @user = UserService.getUserByEmail(params[:email])
-      if @user
-        authorized_user = @user.authenticate(params[:password])
-        if authorized_user
-          session[:email] = @user.email
-          session[:id] = @user.id
-          redirect_to(controller:'posts' ,:action => 'index')
-        else
-          flash[:notice] = "Please check your email and password !"
-          redirect_to login_path
-        end
-      else
-        flash[:notice] = "Please check your email and password !"
-        redirect_to login_path
-      end
+    run User::Operation::Login do |result|
+      puts(result[:user][:id])
+      session[:id] = result[:user][:id]
+      session[:email] = result[:user][:email]
+      redirect_to root_path
+      return
     end
+    if result.failure? && result[:email_pwd_fail]
+      redirect_to login_path, notice: 'Please check your email and password'
+    else
+      render :login
+    end
+
+
+  #   if params[:email].blank?
+  #     flash[:notice] = "Email is required"
+  #     redirect_to login_path
+  #   elsif params[:password].blank?
+  #     flash[:notice] = "Password is required"
+  #     redirect_to login_path
+  #   else
+  #     @user = UserService.getUserByEmail(params[:email])
+  #     if @user
+  #       authorized_user = @user.authenticate(params[:password])
+  #       if authorized_user
+  #         session[:email] = @user.email
+  #         session[:id] = @user.id
+  #         redirect_to(controller:'posts' ,:action => 'index')
+  #       else
+  #         flash[:notice] = "Please check your email and password !"
+  #         redirect_to login_path
+  #       end
+  #     else
+  #       flash[:notice] = "Please check your email and password !"
+  #       redirect_to login_path
+  #     end
+  #   end
   end
 
   def logout

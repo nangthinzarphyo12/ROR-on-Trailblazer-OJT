@@ -4,11 +4,10 @@ class PasswordController < ApplicationController
     end
 
     def create
-        @user = UserService.getUserByEmail(params[:email])
+        run User::Operation::SendEmail
+        @user = result[:user]
         if @user
             PasswordMailer.with(user:@user).reset.deliver_now
-            # @user.send_password_reset
-            
             redirect_to password_reset_path, :notice => "Email sent with password reset instructions."
         else
             redirect_to password_reset_path,notice:"We did not find this email."
@@ -22,25 +21,19 @@ class PasswordController < ApplicationController
     end
 
     def update
-        @user = User.find_signed!(params[:token], purpose:"password_reset")
-        if password_params[:password].blank?
-            flash[:notice] = "Password is required"
-            render :edit
-        elsif password_params[:password_confirmation].blank?
-            flash[:notice] = "Confirm password is required"
-            render :edit
+        @userP = User.find_signed!(params[:token], purpose:"password_reset")
+        if params[:user]
+            params[:id] = params[:user][:id]
         else
-            isUpdated = UserService.updateUser(password_params,@user)
-            if isUpdated
-                redirect_to password_reset_path, alert:"Your password was reset successfully.Please sign in."
-            else
-                render :edit
-            end
+            params[:user] = params[:user_contract_update_password]
+            params[:id] = params[:user][:id]
         end
-    end
-
-    private
-    def password_params
-        params.require(:user).permit(:password, :password_confirmation)
+        _ctx = run User::Operation::UpdatePassword do |result| 
+            return redirect_to password_reset_path, alert:"Your password was reset successfully.Please sign in."
+        end
+        @user   = _ctx["contract.default"]
+        @password  = "Editing #{_ctx[:model].password}"
+        @password_confirmation  = "Editing #{_ctx[:model].password_confirmation}"
+        render :edit
     end
 end

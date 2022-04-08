@@ -1,0 +1,27 @@
+= render 'layouts/navbar'
+.form 
+    .form-content 
+        h2 Edit Post
+
+        = form_with model: @post, url: posts_edit_path(:id => @post.id), method: :patch do |f|
+            .content
+                = f.hidden_field 'id'
+                label Post Title
+                span class="required-sign" * 
+                = f.text_field 'title'
+                - if @post.errors[:title].any?
+                    .warning-message This #{ @post.errors[:title][0]}
+            .content
+                label Description
+                span class="required-sign" * 
+                = f.text_area 'description', class: 'description-area'
+                - if @post.errors[:description].any?
+                    .warning-message This #{ @post.errors[:description][0]}
+            .radio-group
+                = f.radio_button :public_flag, '1', class: 'radio-btn', checked: true
+                label Public
+                = f.radio_button :public_flag, '0', class: 'radio-btn'
+                label Private
+            .button-group
+                = link_to "Back", posts_show_path(:id=>@post.id), class: 'sub-btn'
+                = f.submit 'Update', class: 'sub-btn'

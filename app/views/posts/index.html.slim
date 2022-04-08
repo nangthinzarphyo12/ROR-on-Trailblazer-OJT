@@ -1,0 +1,42 @@
+= render 'layouts/navbar'
+.form
+    .form-content
+        .successMessage
+            = flash.notice
+        h2 All Post
+        .file-group 
+            = form_tag posts_import_path, class: 'file-group', multipart: true do
+                = file_field_tag 'file' , class: 'file-choose-box'
+                .warning-message
+                    = flash.alert
+                = submit_tag 'CSV Import' , class: 'sub-btn file-choose-box'
+                = link_to 'CSV Export', posts_export_path(format: :'csv'), class: 'sub-btn'
+        = form_with  url: posts_search_path,method: :get do |form|
+            .search-info
+                = form.text_field 'searchInfo',placeholder: 'title, description, author name'
+                .button-group
+                = form.submit 'Search', class: 'sub-btn'
+
+        .create-btn
+            = link_to "Create Post", posts_new_path, class: 'sub-btn'
+        - @posts.each do |post|
+            .post-card
+                .post-head
+                    h4 = post.title
+                    - if post.public_flag == 1
+                        i.fa.fa-globe.awesome-icon
+                    - else
+                        i.fa.fa-lock.awesome-icon
+                .post-body
+                    = post.description
+                    .button-group
+                        .post-btn-group
+                            = link_to "Detail", posts_show_path(:id => post.id), class: 'sub-btn'
+                            = link_to "Delete", posts_destroy_path(:id => post.id), class: 'sub-btn delete-btn',:data=>{ confirm: 'Are you sure you want to delete this post?' }
+        .right-btn-group
+            = will_paginate @posts, renderer: BootstrapPagination::Rails
+
+
+        
+
+                

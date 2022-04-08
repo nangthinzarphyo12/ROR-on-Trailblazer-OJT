@@ -1,0 +1,41 @@
+.form 
+    .form-content
+        .main-title
+            h2 Add New User
+        = form_with model: @form, url:users_new_path, method: :post do|f|
+            .content 
+                label Name
+                span class="required-sign" * 
+                = f.text_field 'name'
+                - if @form.errors[:name].any?
+                    .warning-message This #{ @form.errors[:name][0]}
+            .content
+                label Email
+                span class="required-sign" * 
+                = f.text_field 'email'
+                - if @form.errors[:email].any?
+                    .warning-message This #{ @form.errors[:email][0]}
+            .content
+                label Password
+                span class="required-sign" * 
+                = f.password_field 'password'
+                - if @form.errors[:password].any?
+                    .warning-message This #{ @form.errors[:password][0]}
+            .content
+                label Password Confirm
+                span class="required-sign" * 
+                = f.password_field 'password_confirmation'
+                - if @form.errors[:password_confirmation].any?
+                    .warning-message This #{ @form.errors[:password_confirmation][0]}
+            .content
+                label Phone
+                = f.text_field 'phone'
+            .content 
+                .radio-group
+                    = f.radio_button :role, '1', class: 'radio-btn', checked: true
+                    label Admin
+                    = f.radio_button :role, '0', class: 'radio-btn'
+                    label Member
+            .button-group
+                = link_to "Back", users_list_path, class: 'sub-btn'
+                = f.submit 'Add', class: 'sub-btn'

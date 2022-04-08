@@ -1,0 +1,22 @@
+.form 
+    .form-content 
+        h2 Reset your password
+        .warning-message
+            = flash.notice
+        = form_with model: @user, url: password_reset_edit_path(token:params[:token]) do |f|
+            .content
+                = f.hidden_field 'id'
+                label Password
+                span class="required-sign" * 
+                = f.password_field 'password'
+                - if @user.errors[:password].any?
+                    .warning-message This #{ @user.errors[:password][0]}
+            .content
+                label Password Confirm
+                span class="required-sign" * 
+                = f.password_field 'password_confirmation'
+                - if @user.errors[:password_confirmation].any?
+                    .warning-message This #{ @user.errors[:password_confirmation][0]}
+            .button-group
+                = link_to "Back", password_reset_path, class: 'sub-btn'
+                = f.submit 'Reset Password', class: 'sub-btn reset-link-btn'

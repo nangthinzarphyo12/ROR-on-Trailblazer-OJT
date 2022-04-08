@@ -1,0 +1,30 @@
+= render 'layouts/navbar'
+.form 
+    .form-content 
+        h2 Edit User
+
+        = form_with model: @user, url: users_edit_path(:id => @user.id), method: :patch do |f|
+            .content
+                = f.hidden_field 'id'
+                label Name
+                span class="required-sign" * 
+                = f.text_field 'name'
+                - if @user.errors[:name].any?
+                    .warning-message This #{ @user.errors[:name][0]}
+            .content
+                label Email
+                span class="required-sign" * 
+                = f.text_field 'email'
+                - if @user.errors[:email].any?
+                    .warning-message This #{ @user.errors[:email][0]}
+            .content
+                label Phone
+                = f.text_field 'phone'
+            .radio-group
+                = f.radio_button :role, '1', class: 'radio-btn', checked: true
+                label Admin
+                = f.radio_button :role, '0', class: 'radio-btn'
+                label Member
+            .button-group
+                = link_to "Back", users_show_path(:id=>@user.id), class: 'sub-btn'
+                = f.submit 'Update', class: 'sub-btn'
