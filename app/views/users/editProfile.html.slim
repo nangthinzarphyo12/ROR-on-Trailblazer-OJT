@@ -26,5 +26,5 @@
                 = f.radio_button :role, '0', class: 'radio-btn'
                 label Member
             .button-group
-                = link_to "Back", users_list_path, class: 'sub-btn'
+                = link_to 'Back', users_profile_path( :id=>session[:id] ), class: 'sub-btn'
                 = f.submit 'Update', class: 'sub-btn'

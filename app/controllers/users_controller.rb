@@ -78,7 +78,7 @@ class UsersController < ApplicationController
     if params[:user]
       puts (params[:user])
     else 
-      params[:user] = params[:user_contract_update]
+      params[:user] = params[:user_contract_update_password]
     end
     _ctx = run User::Operation::UpdatePassword do |result| 
       return redirect_to users_profile_path('id'=>params[:user][:id]), notice: "Password updated successfully!"
