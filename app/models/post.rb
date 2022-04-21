@@ -1,4 +1,5 @@
 class Post < ApplicationRecord
+    belongs_to :author, class_name: "User", foreign_key: "created_by"
     belongs_to :user, foreign_key: "created_by"
 
     # validates :title, presence: true ,length: { maximum: 255 }

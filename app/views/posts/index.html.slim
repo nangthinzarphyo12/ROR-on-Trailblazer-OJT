@@ -27,6 +27,8 @@
                         i.fa.fa-globe.awesome-icon
                     - else
                         i.fa.fa-lock.awesome-icon
+                    p = 'Last updated on : ' + distance_of_time_in_words_to_now(post.updated_at) + ' ago'
+                    p = 'Created by : ' + post.author.name
                 .post-body
                     = post.description
                     .button-group
