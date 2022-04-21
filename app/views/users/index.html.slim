@@ -24,7 +24,11 @@
                     tr 
                         td = user.name
                         td = user.email
-                        td = user.role
+                        td 
+                            - if user.role == 1
+                                p Admin
+                            - else 
+                                p Member
                         td = user.phone
                         td   
                             = link_to "Detail", users_show_path(:id=>user.id), class: 'sub-btn'
