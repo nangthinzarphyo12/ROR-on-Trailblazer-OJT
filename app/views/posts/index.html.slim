@@ -11,11 +11,11 @@
                     = flash.alert
                 = submit_tag 'CSV Import' , class: 'sub-btn file-choose-box'
                 = link_to 'CSV Export', posts_export_path(format: :'csv'), class: 'sub-btn'
-        = form_with  url: posts_search_path,method: :get do |form|
+        = form_with  url: posts_search_path,method: :get do
             .search-info
-                = form.text_field 'searchInfo',placeholder: 'title, description, author name'
+                = text_field_tag 'searchInfo', params[:searchInfo],placeholder: 'title, description, author name'
                 .button-group
-                = form.submit 'Search', class: 'sub-btn'
+                = submit_tag 'Search', class: 'sub-btn'
 
         .create-btn
             = link_to "Create Post", posts_new_path, class: 'sub-btn'

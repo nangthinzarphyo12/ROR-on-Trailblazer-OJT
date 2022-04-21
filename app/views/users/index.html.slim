@@ -4,11 +4,11 @@
         .successMessage
             = flash.notice
         h2 All User
-        = form_with  url: users_search_path,method: :get do |form|
+        = form_with  url: users_search_path,method: :get do
             .search-info
-                = form.text_field 'searchInfo',placeholder: 'name , email, phone'
+                = text_field_tag 'searchInfo', params[:searchInfo],placeholder: 'name , email, phone'
                 .button-group
-                = form.submit 'Search', class: 'sub-btn'
+                = submit_tag 'Search', class: 'sub-btn'
         .create-btn
             = link_to "Create User", users_new_path, class: 'sub-btn'
         table 
